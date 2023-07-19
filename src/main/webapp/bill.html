@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill</title>
+</head>
+<body>
+    <div class="chit-chat-heading">
+        BILL
+    </div>
+    <div class="table-responsive" id="billTable">
+        <!-- Bill table content will be generated dynamically here -->
+    </div>
+
+    <button onclick="downloadBill()">Download Bill</button>
+
+    <script>
+        // Define bill data (You can retrieve these values from your server-side code)
+        var billData = {
+            ename: "<%= ename %>",
+            aname: "<%= aname %>",
+            bdate: "<%= bdate %>",
+            rdate: "<%= rdate %>",
+            days: "<%= days %>",
+            hours: "<%= hours %>",
+            amount: "<%= amount %>",
+            diposite: "<%= diposite %>",
+            totalamount: "<%= totalamount %>"
+        };
+
+        // Function to generate bill text content
+        function generateBillText() {
+            var billText = `Equipment Name: ${billData.ename}
+Owner Name: ${billData.aname}
+Booked Date: ${billData.bdate}
+Release Date: ${billData.rdate}
+Period: ${billData.days} Days ${billData.hours} Hours
+Amount: ${billData.amount}
+Deposit: ${billData.diposite}
+Total Amount: ${billData.totalamount}`;
+
+            return billText;
+        }
+
+        // Function to download bill as a text file
+        function downloadBill() {
+            var billText = generateBillText();
+            var blob = new Blob([billText], { type: 'text/plain' });
+            var url = URL.createObjectURL(blob);
+
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'bill.txt';
+            document.body.appendChild(a);
+            a.click();
+
+            document.body.removeChild(a);
+        }
+
+        // Generate bill table when the page loads
+        window.onload = generateBillText;
+    </script>
+</body>
+</html>
